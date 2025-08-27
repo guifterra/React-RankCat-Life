@@ -13,6 +13,8 @@ export default function App() {
   
   return (
     <View style={styles.container}>
+      {/* Deixa barra superior (Hora, Notificações e Bateria brancos) */}
+      <StatusBar style="light" />
       <Home />
     </View>
   );
