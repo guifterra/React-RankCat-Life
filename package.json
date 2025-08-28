@@ -14,7 +14,8 @@
     "react": "19.0.0",
     "react-native": "0.79.6",
     "react-native-navigation-bar-color": "^2.0.2",
-    "expo-navigation-bar": "~4.2.8"
+    "expo-navigation-bar": "~4.2.8",
+    "@expo/vector-icons": "^14.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
