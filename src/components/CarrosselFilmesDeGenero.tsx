@@ -3,12 +3,15 @@ import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from "react
 import { getMoviesByGenre } from "../services/moviesService";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Movie } from "../types/Movie";
+import { Category } from "../types/Category";
 
-export default function CarrosselFilmesDeGenero() {
+export default function CarrosselFilmesDeGenero( { nomeDaCategoria, numeroDaCategoria } : Category ) {
   const [filmes, setFilmes] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const genreId = 28;
+  
+  const genderName = nomeDaCategoria;
+  const genreId = numeroDaCategoria;
 
   useEffect(() => {
     carregarFilmes(page);
@@ -35,7 +38,7 @@ export default function CarrosselFilmesDeGenero() {
   return (
     <View style={styles.container}>
       <View style={styles.containerCategory}>
-        <Text style={styles.category}>NOME_DA_CATEGORIA_FILME</Text>
+        <Text style={styles.category}>{genderName} - FILMES</Text>
         <View style={styles.grennLine} />
       </View>
       <FlatList

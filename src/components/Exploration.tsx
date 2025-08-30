@@ -1,8 +1,17 @@
 import { ScrollView, StyleSheet, Text } from 'react-native';
+
 import CarrosselFilmes from './CarrosselFilmes';
 import CarrosselSeries from './CarrosselSeries';
-import CarrosselFilmesDeGenero from './CarrosselFilmesDeGenero';
-import CarrosselSeriesDeGenero from './CarrosselSeriesDeGenero';
+
+import CarrosselFilmesAcao from './CarrosselFilmesAcao';
+import CarrosselFilmeAnimacao from './CarrosselFilmesAnimacao';
+import CarrosselFilmesComedia from './CarrosselFilmesComedia';
+import CarrosselFilmesTerror from './CarrosselFilmesTerror';
+
+import CarrosselSeriesAcao from './CarrosselSeriesAcao';
+import CarrosselSeriesDocumentario from './CarrosselSeriesDocumentario';
+import CarrosselSeriesKids from './CarrosselSeriesKids';
+import CarrosselSeriesMisterio from './CarrosselSeriesMisterio';
 
 export default function Exploration() {
   return (
@@ -12,8 +21,16 @@ export default function Exploration() {
     >
       <CarrosselFilmes />
       <CarrosselSeries />
-      <CarrosselFilmesDeGenero />
-      <CarrosselSeriesDeGenero />
+
+      <CarrosselFilmesAcao />
+      <CarrosselFilmeAnimacao />
+      <CarrosselFilmesComedia />
+      <CarrosselFilmesTerror />
+
+      <CarrosselSeriesAcao />
+      <CarrosselSeriesDocumentario />
+      <CarrosselSeriesKids />
+      <CarrosselSeriesMisterio />
     </ScrollView>
   );
 }
