@@ -1,15 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Animated, Dimensions, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import React, { useRef, useState } from 'react';
-import { MaterialIcons } from '@expo/vector-icons'; // ícone vetorial
+import React, { useRef, useState, useEffect } from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-export default function Menu() {
+interface MenuProps {
+  setShowTeste: (value: boolean) => void;
+  setSearchQuery: (value: string) => void;
+  searchQuery: string;
+  inputActive: boolean;
+  setInputActive: (value: boolean) => void;
+}
+
+export default function Menu({ setShowTeste, setSearchQuery, searchQuery, inputActive, setInputActive }: MenuProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState(searchQuery); 
 
   const slideAnim = useRef(new Animated.Value(-SCREEN_WIDTH * 0.8)).current;
 
@@ -19,7 +25,6 @@ export default function Menu() {
     extrapolate: 'clamp',
   });
 
-  // --- Menu lateral ---
   const toggleMenu = () => {
     if (menuOpen) closeMenu();
     else openMenu();
@@ -43,45 +48,50 @@ export default function Menu() {
     }).start(() => setMenuOpen(false));
   };
 
-  // --- Pesquisa ---
-  const openSearch = () => setSearchOpen(true);
+  const openSearch = () => {
+    setInputActive(true);
+    setSearchText(searchQuery);
+  };
+
   const closeSearch = () => {
-    setSearchOpen(false);
+    setInputActive(false);
+    setShowTeste(false);
     setSearchText('');
     Keyboard.dismiss();
   };
-  const onSubmitSearch = () => {
-    console.log('Valor pesquisado:', searchText); // ação futura
-    closeSearch();
-  };
+
+  useEffect(() => {
+    if (inputActive && searchText.trim() !== '') {
+      setSearchQuery(searchText);
+      setShowTeste(true);
+    } else if (inputActive && searchText.trim() === '') {
+      setShowTeste(false);
+    }
+  }, [searchText]);
 
   return (
     <>
-      {/* Overlay clicável */}
       {menuOpen && overlayVisible && (
         <TouchableWithoutFeedback onPress={closeMenu}>
           <Animated.View style={[styles.overlay, { opacity: overlayOpacity }]} />
         </TouchableWithoutFeedback>
       )}
 
-      {/* Menu lateral */}
       <Animated.View style={[styles.sideMenu, { left: slideAnim }]}>
         <Text style={styles.menuItem}>Menu Item 1</Text>
         <Text style={styles.menuItem}>Menu Item 2</Text>
       </Animated.View>
 
-      {/* Barra superior */}
       <View style={styles.container}>
-        {searchOpen ? (
+        {inputActive ? (
           <View style={styles.searchWrapper}>
             <TextInput
               style={styles.searchInput}
               placeholder="Buscar..."
               placeholderTextColor="gray"
-              autoFocus={true}
+              autoFocus
               value={searchText}
               onChangeText={setSearchText}
-              onSubmitEditing={onSubmitSearch}
             />
             <TouchableOpacity onPress={closeSearch} style={styles.closeBtn}>
               <Text style={styles.closeBtnText}>✕</Text>
@@ -123,10 +133,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     zIndex: 10,
   },
-  logo: {
-    width: 130,
-    height: 70,
-  },
+  logo: { width: 130, height: 70 },
   sideMenu: {
     position: 'absolute',
     top: 0,
@@ -137,52 +144,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     zIndex: 999,
   },
-  menuItem: {
-    color: 'white',
-    fontSize: 18,
-    marginVertical: 15,
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: SCREEN_WIDTH * 0.8,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'black',
-    zIndex: 998,
-  },
-  menuButton: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuButtonText: {
-    color: 'white',
-    fontSize: 24,
-  },
-  searchWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  searchInput: {
-    flex: 1,
-    height: 50,
-    backgroundColor: '#2c2c36',
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    color: 'white',
-    fontSize: 18,
-  },
-  closeBtn: {
-    marginLeft: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-  },
-  closeBtnText: {
-    color: 'white',
-    fontSize: 20,
-  },
+  menuItem: { color: 'white', fontSize: 18, marginVertical: 15 },
+  overlay: { position: 'absolute', top: 0, left: SCREEN_WIDTH * 0.8, right: 0, bottom: 0, backgroundColor: 'black', zIndex: 998 },
+  menuButton: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
+  menuButtonText: { color: 'white', fontSize: 24 },
+  searchWrapper: { flex: 1, flexDirection: 'row', alignItems: 'center' },
+  searchInput: { flex: 1, height: 50, backgroundColor: '#2c2c36', borderRadius: 8, paddingHorizontal: 15, color: 'white', fontSize: 18 },
+  closeBtn: { marginLeft: 10, paddingHorizontal: 8, paddingVertical: 2 },
+  closeBtnText: { color: 'white', fontSize: 20 },
 });

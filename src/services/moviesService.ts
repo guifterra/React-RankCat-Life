@@ -49,3 +49,24 @@ export async function getSeriesByGenre(genreId: number, page: number = 1) {
     totalPages: response.data.total_pages,
   };
 }
+
+export async function searchMulti(query: string) {
+  if (!query || query.trim() === "") return [];
+
+  try {
+    const response = await tmdb.get("/search/multi", {
+      params: {
+        query,
+        language: "pt-BR",
+        include_adult: false,
+        page: 1,
+      },
+    });
+
+    const filtered = (response.data.results || []).filter((item: any) => item.poster_path);
+    return filtered;
+  } catch (error) {
+    console.error("Erro na busca:", error);
+    return [];
+  }
+}
