@@ -25,10 +25,10 @@ O objetivo é disponibilizar um ambiente em que o usuário consiga explorar ou p
 ### Passo a passo
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/seu-repo.git
+git clone https://github.com/guifterra/React-RankCat-Life
 
 # Entre na pasta do projeto
-cd seu-repo
+cd 'pastaDoProjeto'
 
 # Instale as dependências
 npm install
